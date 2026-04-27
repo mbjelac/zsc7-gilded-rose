@@ -1,9 +1,71 @@
 import { Item, GildedRose } from '@/gilded-rose';
 
+
+
 describe('Gilded Rose', () => {
-  it('should foo', () => {
-    const gildedRose = new GildedRose([new Item('foo', 0, 0)]);
+  it('should lower quality and sell in by one', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('foo', 10, 10)]);
+    //when
     const items = gildedRose.updateQuality();
-    expect(items[0].name).toBe('fixme');
+    //then
+    expect(items[0].sellIn).toBe(9);
+    expect(items[0].quality).toBe(9);
   });
-});
+
+  it('quality should degrade by one', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('foo', 1, 1)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(0);
+  });
+
+  it('quality should not go below zero', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('foo', 1, 0)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(0);
+  });
+
+  it('quality should degrade twice as fast after the sell date has passed', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('foo', 0, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(8);
+  });
+
+  it('quality of an item should never be more than 50', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('foo', 10, 51)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(50);
+  });
+
+  it('Aged Brie should increase in quality the older it gets', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Aged Brie', 10, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(11);
+  });
+
+  it('Aged Brie should not increase in quality above 50', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Aged Brie', 10, 50)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(50);
+  });
+})
+
+

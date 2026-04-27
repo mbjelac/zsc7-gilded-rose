@@ -76,6 +76,42 @@ describe('Gilded Rose', () => {
     expect(items[0].sellIn).toBe(10);
     expect(items[0].quality).toBe(10);
   });
+
+  it('Backstage passes should increase in quality by 3 if 5 days or less', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 5, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(13);
+  });
+
+  it('Backstage passes should increase in quality by 2 if 10 days or less (but more than 5)', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 10, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(12);
+  });
+
+  it('Backstage passes should increase in quality by 1 if more than 10 days', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 11, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(11);
+  });
+
+  it('Backstage passes should increase in quality by 1 if more than 10 days', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 0, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(0);
+  });
 })
 
 

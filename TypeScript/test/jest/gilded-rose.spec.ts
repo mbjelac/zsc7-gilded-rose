@@ -58,6 +58,15 @@ describe('Gilded Rose', () => {
     expect(items[0].quality).toBe(11);
   });
 
+  it('Aged Brie should increase in quality the older it gets even after it expired', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Aged Brie', 0, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(12);
+  });
+
   it('Aged Brie should not increase in quality above 50', () => {
     //given
     const gildedRose = new GildedRose([new Item('Aged Brie', 10, 50)]);

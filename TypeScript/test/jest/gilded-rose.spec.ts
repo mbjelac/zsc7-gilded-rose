@@ -1,7 +1,5 @@
 import { Item, GildedRose } from '@/gilded-rose';
 
-
-
 describe('Gilded Rose', () => {
   it('should lower quality and sell in by one', () => {
     //given
@@ -116,6 +114,24 @@ describe('Gilded Rose', () => {
   it('Backstage passes should increase in quality by 1 if more than 10 days', () => {
     //given
     const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 0, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(0);
+  });
+
+  it('"Conjured" items should degrade in Quality twice as fast as normal items', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Conjured', 10, 10)]);
+    //when
+    const items = gildedRose.updateQuality();
+    //then
+    expect(items[0].quality).toBe(8);
+  });
+
+  it('"Conjured" items should not degrade in Quality belowe zero', () => {
+    //given
+    const gildedRose = new GildedRose([new Item('Conjured', 10, 1)]);
     //when
     const items = gildedRose.updateQuality();
     //then
